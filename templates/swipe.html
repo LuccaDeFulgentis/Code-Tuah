@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swipe Your Workout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container" id="exercise-card">
+        <h1 id="exercise-name">{{ exercise['Exercise Name'] }}</h1>
+        <p id="exercise-main-muscle">{{ exercise['Main_muscle'] }}</p>
+        <p id="exercise-difficulty">Difficulty: {{ exercise['Difficulty (1-5)'] }}</p>
+
+        <div class="swipe-container">
+            <button id="swipe-left" class="swipe-left">Swipe Left</button>
+            <button id="swipe-right" class="swipe-right">Swipe Right</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='swipe.js') }}"></script>
+    <script id="muscle-groups" type="application/json">{{ muscle_groups | tojson }}</script>
+</body>
+</html>

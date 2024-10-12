@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Plan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Create Your Workout Plan</h1>
+        <form action="/diagnostic" method="POST">
+            <label for="muscle_groups">Select Muscle Groups to Work On:</label>
+            <select name="muscle_groups" multiple required>
+                {% for group in muscle_groups %}
+                <option value="{{ group }}">{{ group }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="avoid_muscle_groups">Select Muscle Groups to Avoid:</label>
+            <select name="avoid_muscle_groups" multiple required>
+                {% for group in muscle_groups %}
+                <option value="{{ group }}">{{ group }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="workout_days">How many days per week?</label>
+            <input type="number" name="workout_days" min="1" max="7" required>
+
+            <label for="gym_access">Do you have access to a gym?</label>
+            <select name="gym_access" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+
+            <label for="skill_level">Skill Level (1-5):</label>
+            <input type="number" name="skill_level" min="1" max="5" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
