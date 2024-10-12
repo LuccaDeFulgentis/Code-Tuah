@@ -64,15 +64,16 @@ for i in range(len(muscleInput)):
 muscleGroups += [int(temp)]
 
 #Recommendation Loop
-visited = {}
-for i in range(1000):
-
-    equipmentRandom = random.choice(equipmentHave)
-    experienceRandom = random.randint(1, experience)
-    predictions = model.predict([[equipmentRandom, 1, experienceRandom]]) 
-    if predictions[0][0] not in visited:
-        visited[predictions[0][0]] = 1
-    else:
-        visited[predictions[0][0]] += 1
-print(visited)
+choices = []
+for i in muscleGroups:
+    visited = {}
+    for j in range(1000):
+        equipmentRandom = random.choice(equipmentHave)
+        experienceRandom = random.randint(1, experience)
+        predictions = model.predict([[equipmentRandom, i, experienceRandom]]) 
+        if predictions[0][0] not in visited:
+            visited[predictions[0][0]] = 1
+        else:
+            visited[predictions[0][0]] += 1
+    choices += [visited]
 
