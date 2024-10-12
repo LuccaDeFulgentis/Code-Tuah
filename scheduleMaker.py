@@ -4,14 +4,14 @@ def create_workout_schedule(days, muscle_groups, exercises):
     """
     
     Args:
-        days (int): Number of workout days (3, 4, 5, or 6).
+        days (int): Number of workout days (3, 4, 5, 6, or 7).
         muscle_groups (list): List of muscle groups to be trained.
         exercises (list): List of exercise names to be included.
         
         REQUIRES NUMBER OF EXERCISES TO BE AT LEAST NUMBER OF DAYS
 
     Returns:
-        dict: A dictionary representing the workout schedule.
+        schedule: A dictionary representing the workout schedule.
     """
 
     df = pd.read_csv("gym_exercise_dataset_cleaned.csv")
@@ -54,8 +54,4 @@ def create_workout_schedule(days, muscle_groups, exercises):
 
     return schedule
 
-days = 7
-muscle_groups = ["Hips", "Chest", "Shoulder"]
-exercises = ["Glute Kickback", "Split Squat", "Step-up", "Rear Lunge", "Single Leg Split Squat", "Hip Thrust", "Bench Press", "Military Press"]
-workout_schedule = create_workout_schedule(days, muscle_groups, exercises)
-print(workout_schedule)
+
