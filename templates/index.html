@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Exercise Recommender</h1>
+        <form id="exerciseForm" method="POST" action="/get_exercise">
+            <div class="form-group">
+                <label for="equipment">Select Equipment (hold CTRL or CMD to select multiple):</label>
+                <select id="equipment" name="equipment" multiple>
+                    <option value="1">Barbell</option>
+                    <option value="2">Cable</option>
+                    <option value="3">Dumbbell</option>
+                    <option value="4">Lever (plate loaded)</option>
+                    <option value="5">Sled</option>
+                    <option value="6">Smith Machine</option>
+                    <option value="7">Body Weight</option>
+                    <option value="8">Suspension</option>
+                    <option value="9">Assisted Machine</option>
+                    <option value="10">Weighted Workouts</option>
+                    <option value="11">Bands</option>
+                    <option value="12">Plyometrics</option>
+                    <option value="13">Chest-Dip Machine</option>
+                    <option value="14">Cable Flies</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="difficulty">Select Difficulty (1-5):</label>
+                <select id="difficulty" name="difficulty">
+                    <option value="1">1 (Beginner)</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5 (Expert)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="muscle">Select Muscle Group:</label>
+                <select id="muscle" name="muscle">
+                    <option value="1">Shoulder</option>
+                    <option value="2">Triceps</option>
+                    <option value="3">Biceps</option>
+                    <option value="4">Forearm</option>
+                    <option value="5">Back</option>
+                    <option value="6">Chest</option>
+                    <option value="7">Hips</option>
+                    <option value="8">Thighs</option>
+                    <option value="9">Calves</option>
+                </select>
+            </div>
+            <button type="submit">Get Exercise</button>
+        </form>
+
+        <div id="result">
+            <!-- Recommended exercise will be displayed here -->
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
