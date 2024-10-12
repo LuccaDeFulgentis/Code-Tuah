@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Summary</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Selected Exercises</h1>
+        <ul>
+            {% for exercise in exercises %}
+                <li>{{ exercise }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

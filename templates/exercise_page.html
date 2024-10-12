@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Exercise Recommendation</h1>
+        <div id="exercise-section">
+            {% if exercise %}
+                <p>Recommended Exercise: {{ exercise }}</p>
+                <form method="POST" action="/exercise_page">
+                    <button type="submit" name="action" value="accept">Accept</button>
+                    <button type="submit" name="action" value="reject">Reject</button>
+                </form>
+            {% else %}
+                <p>No more exercises available to recommend.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

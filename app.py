@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 import random
 
 app = Flask(__name__)
+app.secret_key = 'random_secret_key'  # Required for session management
 
 # Load dataset
 df = pd.read_csv('gym_exercise_dataset_cleaned.csv', skipinitialspace=True)
@@ -21,16 +22,8 @@ y = df['Exercise Name']
 model = DecisionTreeClassifier()
 model.fit(x, y)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/get_exercise', methods=['POST'])
-def get_exercise():
-    equipment = list(map(int, request.form.getlist('equipment')))
-    difficulty = int(request.form['difficulty'])
-    muscle = int(request.form['muscle'])
-
+# Generate a list of exercises based on user's preferences
+def generate_exercises(equipment, difficulty, muscle):
     visited = {}
     for _ in range(1000):
         equipmentRandom = random.choice(equipment)
@@ -41,8 +34,70 @@ def get_exercise():
         else:
             visited[prediction[0]] += 1
 
-    recommended_exercise = max(visited, key=visited.get)
-    return jsonify({'exercise': recommended_exercise})
+    # Sort exercises by frequency (most frequent first)
+    sorted_exercises = sorted(visited.items(), key=lambda item: item[1], reverse=True)
+    return sorted_exercises
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/start', methods=['POST'])
+def start():
+    equipment = list(map(int, request.form.getlist('equipment')))
+    difficulty = int(request.form['difficulty'])
+    muscle = int(request.form['muscle'])
+
+    session['equipment'] = equipment
+    session['difficulty'] = difficulty
+    session['muscle'] = muscle
+    session['selected_exercises'] = []  # Reset selected exercises
+    session['rejected_exercises'] = []  # Track rejected exercises
+    session['exercise_list'] = generate_exercises(equipment, difficulty, muscle)
+
+    return redirect(url_for('exercise_page'))
+
+@app.route('/exercise_page', methods=['GET', 'POST'])
+def exercise_page():
+    selected_exercises = session.get('selected_exercises', [])
+    rejected_exercises = session.get('rejected_exercises', [])
+    exercise_list = session.get('exercise_list', [])
+
+    # If user has already selected 3 exercises, redirect to the summary
+    if len(selected_exercises) >= 3:
+        return redirect(url_for('summary'))
+
+    if request.method == 'POST':
+        action = request.form['action']
+        current_exercise = exercise_list[0][0]  # Get the current top exercise
+
+        if action == 'accept':
+            selected_exercises.append(current_exercise)  # Add accepted exercise
+        elif action == 'reject':
+            rejected_exercises.append(current_exercise)  # Add rejected exercise
+        
+        # Remove the current exercise from the exercise list
+        exercise_list = [e for e in exercise_list if e[0] != current_exercise]
+
+        session['selected_exercises'] = selected_exercises
+        session['rejected_exercises'] = rejected_exercises
+        session['exercise_list'] = exercise_list
+
+        if len(selected_exercises) >= 3:
+            return redirect(url_for('summary'))
+
+    # Get the first exercise that hasn't been rejected and isn't already selected
+    if exercise_list:
+        current_exercise = exercise_list[0][0]
+    else:
+        current_exercise = None  # No more exercises left
+
+    return render_template('exercise_page.html', exercise=current_exercise)
+
+@app.route('/summary')
+def summary():
+    selected_exercises = session.get('selected_exercises', [])
+    return render_template('summary.html', exercises=selected_exercises)
 
 if __name__ == '__main__':
     app.run(debug=True)

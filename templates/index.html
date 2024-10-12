@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Exercise Recommender</h1>
-        <form id="exerciseForm" method="POST" action="/get_exercise">
+        <form id="exerciseForm" method="POST" action="/start">
             <div class="form-group">
                 <label for="equipment">Select Equipment (hold CTRL or CMD to select multiple):</label>
                 <select id="equipment" name="equipment" multiple>
@@ -53,14 +53,8 @@
                     <option value="9">Calves</option>
                 </select>
             </div>
-            <button type="submit">Get Exercise</button>
+            <button type="submit">Submit</button>
         </form>
-
-        <div id="result">
-            <!-- Recommended exercise will be displayed here -->
-        </div>
     </div>
-
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
