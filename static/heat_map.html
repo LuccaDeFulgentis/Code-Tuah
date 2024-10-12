@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Workout Heat Map</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='heat_map.css') }}">
+</head>
+<body>
+    <h1>Workout Heat Map</h1>
+
+    <div id="workout-input">
+        <h2>Workout Schedule</h2>
+        <div id="days-container"> </div>
+        <button id="add-day">Add Day</button>
+        <button id="generate-heatmap">Generate Heat Map</button>
+    </div>
+
+    <div id="heat-map">
+        <img id="heatmap-image" src="" alt="Heatmap"> 
+    </div>
+
+    <script src="{{ url_for('static', filename='heat_map.js') }}"></script>
+</body>
+</html>

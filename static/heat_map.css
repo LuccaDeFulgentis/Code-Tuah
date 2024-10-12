@@ -1,0 +1,17 @@
+/* Add your CSS styling here */
+body {
+    font-family: sans-serif;
+}
+
+#workout-input {
+    margin-bottom: 20px;
+}
+
+#heat-map {
+    /* Style the heatmap container */
+}
+
+#heatmap-image {
+    max-width: 100%;
+    height: auto;
+}
