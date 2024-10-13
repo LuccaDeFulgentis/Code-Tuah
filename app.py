@@ -104,14 +104,6 @@ def exercise_page():
 
     return render_template('exercise_page.html', exercise=current_exercise)
 
-    # Get the first exercise that hasn't been rejected and isn't already selected
-    if exercise_list:
-        current_exercise = exercise_list[0]
-    else:
-        current_exercise = None  # No more exercises left
-
-    return render_template('exercise_page.html', exercise=current_exercise)
-
 @app.route('/summary')
 def summary():
     selected_exercises = session.get('selected_exercises', [])
