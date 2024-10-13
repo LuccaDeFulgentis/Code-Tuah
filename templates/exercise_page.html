@@ -11,7 +11,17 @@
         <h1>Exercise Recommendation</h1>
         <div id="exercise-section">
             {% if exercise %}
-                <p>Recommended Exercise: {{ exercise }}</p>
+            <div>
+                <h2>{{ exercise['Exercise Name'] }}</h2>
+                <p><strong>Equipment:</strong> {{ exercise['Equipment'] }}</p>
+                <p><strong>Main Muscle:</strong> {{ exercise['Main_muscle'] }}</p>
+                <p><strong>Difficulty:</strong> {{ exercise['Difficulty (1-5)'] }}</p>
+                <p><strong>Mechanics:</strong> {{ exercise['Mechanics'] }}</p>
+                <p><strong>Preparation:</strong> {{ exercise['Preparation'] }}</p>
+                <p><strong>Execution:</strong> {{ exercise['Execution'] }}</p>
+                <p><strong>Secondary Muscles:</strong> {{ exercise['Secondary Muscles'] }}</p>
+            </div>
+            
                 <form method="POST" action="/exercise_page">
                     <button type="submit" name="action" value="accept">Accept</button>
                     <button type="submit" name="action" value="reject">Reject</button>

@@ -40,8 +40,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="muscle">Select Muscle Group:</label>
-                <select id="muscle" name="muscle">
+                <label for="muscle">Select Muscle Groups (hold CTRL or CMD to select multiple):</label>
+                <select id="muscle" name="muscle" multiple>
                     <option value="1">Shoulder</option>
                     <option value="2">Triceps</option>
                     <option value="3">Biceps</option>
@@ -51,6 +51,18 @@
                     <option value="7">Hips</option>
                     <option value="8">Thighs</option>
                     <option value="9">Calves</option>
+                </select>
+            </div>
+            
+            <!-- New question for days per week -->
+            <div class="form-group">
+                <label for="days_per_week">Days per week to workout:</label>
+                <select id="days_per_week" name="days_per_week">
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
                 </select>
             </div>
             <button type="submit">Submit</button>

@@ -23,12 +23,14 @@ model = DecisionTreeClassifier()
 model.fit(x, y)
 
 # Generate a list of exercises based on user's preferences
-def generate_exercises(equipment, difficulty, muscle):
+def generate_exercises(equipment, difficulty, muscles):
     visited = {}
     for _ in range(1000):
         equipmentRandom = random.choice(equipment)
         experienceRandom = random.randint(1, difficulty)
-        prediction = model.predict([[equipmentRandom, muscle, experienceRandom]])
+        # Randomly select one of the muscle groups
+        selected_muscle = random.choice(muscles)
+        prediction = model.predict([[equipmentRandom, selected_muscle, experienceRandom]])
         if prediction[0] not in visited:
             visited[prediction[0]] = 1
         else:
@@ -36,7 +38,11 @@ def generate_exercises(equipment, difficulty, muscle):
 
     # Sort exercises by frequency (most frequent first)
     sorted_exercises = sorted(visited.items(), key=lambda item: item[1], reverse=True)
-    return sorted_exercises
+    # Instead of returning only the exercise name, return full rows of data
+    full_exercise_data = [df[df['Exercise Name'] == exercise[0]].to_dict(orient='records')[0] for exercise in sorted_exercises]
+    return full_exercise_data
+
+
 
 @app.route('/')
 def index():
@@ -46,17 +52,21 @@ def index():
 def start():
     equipment = list(map(int, request.form.getlist('equipment')))
     difficulty = int(request.form['difficulty'])
-    muscle = int(request.form['muscle'])
+    # Collect selected muscle groups as a list of integers
+    muscles = list(map(int, request.form.getlist('muscle')))
+    days_per_week = int(request.form['days_per_week'])  # Get the days per week from the form
 
     session['equipment'] = equipment
     session['difficulty'] = difficulty
-    session['muscle'] = muscle
+    session['muscle'] = muscles  # Store list of muscles in session
+    session['days_per_week'] = days_per_week  # Store in session
     session['selected_exercises'] = []  # Reset selected exercises
     session['rejected_exercises'] = []  # Track rejected exercises
-    session['exercise_list'] = generate_exercises(equipment, difficulty, muscle)
+    session['exercise_list'] = generate_exercises(equipment, difficulty, muscles)  # Pass muscles as a list
 
     return redirect(url_for('exercise_page'))
 
+@app.route('/exercise_page', methods=['GET', 'POST'])
 @app.route('/exercise_page', methods=['GET', 'POST'])
 def exercise_page():
     selected_exercises = session.get('selected_exercises', [])
@@ -69,7 +79,7 @@ def exercise_page():
 
     if request.method == 'POST':
         action = request.form['action']
-        current_exercise = exercise_list[0][0]  # Get the current top exercise
+        current_exercise = exercise_list[0]  # Get the current top exercise
 
         if action == 'accept':
             selected_exercises.append(current_exercise)  # Add accepted exercise
@@ -77,7 +87,7 @@ def exercise_page():
             rejected_exercises.append(current_exercise)  # Add rejected exercise
         
         # Remove the current exercise from the exercise list
-        exercise_list = [e for e in exercise_list if e[0] != current_exercise]
+        exercise_list = [e for e in exercise_list if e['Exercise Name'] != current_exercise['Exercise Name']]
 
         session['selected_exercises'] = selected_exercises
         session['rejected_exercises'] = rejected_exercises
@@ -88,7 +98,15 @@ def exercise_page():
 
     # Get the first exercise that hasn't been rejected and isn't already selected
     if exercise_list:
-        current_exercise = exercise_list[0][0]
+        current_exercise = exercise_list[0]
+    else:
+        current_exercise = None  # No more exercises left
+
+    return render_template('exercise_page.html', exercise=current_exercise)
+
+    # Get the first exercise that hasn't been rejected and isn't already selected
+    if exercise_list:
+        current_exercise = exercise_list[0]
     else:
         current_exercise = None  # No more exercises left
 

@@ -11,7 +11,17 @@
         <h1>Selected Exercises</h1>
         <ul>
             {% for exercise in exercises %}
-                <li>{{ exercise }}</li>
+            <li>
+                <h2>{{ exercise['Exercise Name'] }}</h2>
+                <p><strong>Equipment:</strong> {{ exercise['Equipment'] }}</p>
+                <p><strong>Main Muscle:</strong> {{ exercise['Main_muscle'] }}</p>
+                <p><strong>Difficulty:</strong> {{ exercise['Difficulty (1-5)'] }}</p>
+                <p><strong>Mechanics:</strong> {{ exercise['Mechanics'] }}</p>
+                <p><strong>Preparation:</strong> {{ exercise['Preparation'] }}</p>
+                <p><strong>Execution:</strong> {{ exercise['Execution'] }}</p>
+                <p><strong>Secondary Muscles:</strong> {{ exercise['Secondary Muscles'] }}</p>
+            </li>
+            
             {% endfor %}
         </ul>
     </div>
